@@ -1,38 +1,72 @@
 version: 1.0.0
-name: Python Egress Boilerplate
-description: Base module boilerplate for developers in Python.
-icon: https://icons-020-demo.s3.eu-central-1.amazonaws.com/Python.png
+name: SAP HANA Database
+description: Store your Data in your SAP HANA HDBSQL Database
+icon: https://icons-020-demo.s3.eu-central-1.amazonaws.com/mi_sap_output.png
 type: output
 tags:
-  - Boilerplate Egress
-  - Python
-  - Data
+  - SAP HANA Database
   - output
+  - Store
+  - Data
+  - SAP
+  - HANA
+  - HDBSQL
+  - Database
 categories:
   - id: category
     name: Egress
 image:
-  name: weevenetwork/python-egress-module-boilerplate
+  name: weevenetwork/sap-hana-database-egress
   tag: latest
 environments:
-  - key: INPUT_LABEL
-    description: The field to apply module logic on
+  - key: HDB_ADDRESS
+    description: HANA DB schema address
     value: ''
-    default: temperature
+    default: f4a3724b752e.hana.us10.hanacloud.com
     type: string
-    name: Input Label
-  - key: OUTPUT_LABEL
-    description: Output label for data
+    name: HDB Address
+  - key: HDB_PORT
+    description: HANA DB schema port
     value: ''
-    default: filteredTemp
+    default: 450
     type: string
-    name: Output Label
-  - key: OUTPUT_UNIT
-    description: Output unit for data
+    name: HDB Port
+  - key: HDB_USER
+    description: HANA DB schema username
     value: ''
-    default: Celsius
+    default: USER_HDI_DB_1
     type: string
-    name: Output Unit
+    name: HDB Schema Username
+  - key: HDB_PASSWORD
+    description: HANA DB schema password
+    value: ''
+    default: password123
+    type: string
+    name: HDB Schema Password
+  - key: HDB_SCHEMA
+    description: HANA DB schema holding the table
+    value: ''
+    default: SCHEMA_HDI_DB_1
+    type: string
+    name: HDB Schema Name
+  - key: HDB_TABLE
+    description: HANA DB table to write to
+    value: ''
+    default: TableName
+    type: string
+    name: HDB Table Name
+  - key: HDB_HEADERS
+    description: List of comma (,) separated HANA DB table column headers.
+    value: ''
+    default: Temperature, Pressure, Random
+    type: string
+    name: HDB Column Headers
+  - key: LABELS
+    description: List of comma (,) separated labels in passed data. Order of labels must match the order of provided corresponding headers.
+    value: ''
+    default: filterTemp, sumPressure, Number
+    type: string
+    name: Data Labels
 commands: []
 document:
   ports: []
