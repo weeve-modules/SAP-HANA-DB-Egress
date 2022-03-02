@@ -23,8 +23,10 @@
     - [Configuration](#configuration)
     - [Business Logic](#business-logic)
   - [Dependencies](#dependencies)
-  - [Output/Egress](#outputegress)
-- [VSCode Support for devcontainer](#vscode-support-for-devcontainer)
+  - [Examples](#examples)
+    - [Input](#input)
+    - [Output](#output)
+  - [Docker Compose Example](#docker-compose-example)
 
 ***
 
