@@ -6,7 +6,7 @@
 | version      | v0.0.1                                                            |
 | docker image | [weevenetwork/sap-hana-database-egress](https://hub.docker.com/r/weevenetwork/sap-hana-database-egress) |
 | tags         | Python, Flask, Docker, Weeve                                      |
-| authors      | Sanyam Arya                                                       |
+| authors      | Jakub Grzelak                                                       |
 
 ***
 ## Table of Content
@@ -17,11 +17,6 @@
   - [Environment Variables](#environment-variables)
     - [Module Specific](#module-specific)
     - [Set by the weeve Agent on the edge-node](#set-by-the-weeve-agent-on-the-edge-node)
-  - [Directory Structure](#directory-structure)
-    - [File Tree](#file-tree)
-  - [As a module developer](#as-a-module-developer)
-    - [Configuration](#configuration)
-    - [Business Logic](#business-logic)
   - [Dependencies](#dependencies)
   - [Examples](#examples)
     - [Input](#input)
@@ -76,7 +71,7 @@ Other features required for establishing the inter-container communication betwe
 ## Dependencies
 
 ```txt
-Flask==1.1.1
+Flask==2.0.3
 requests
 python-dotenv
 hdbcli
