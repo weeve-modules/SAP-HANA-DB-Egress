@@ -1,126 +1,106 @@
-# SAP HANA Database Egress
+# Python Output Module Boilerplate
 
-|              |                                                                   |
-| ------------ | ----------------------------------------------------------------- |
-| name         | SAP HANA Database Egress                                          |
-| version      | v0.0.1                                                            |
-| docker image | [weevenetwork/sap-hana-database-egress](https://hub.docker.com/r/weevenetwork/sap-hana-database-egress) |
-| tags         | Python, Flask, Docker, Weeve                                      |
-| authors      | Jakub Grzelak                                                       |
+|              |                                                                  |
+| ------------ | ---------------------------------------------------------------- |
+| name         | Python Output Module Boilerplate                             |
+| version      | v1.0.0                                                           |
+| GitHub       | [python-output-module-boilerplate](https://github.com/weeve-modules/python-egress-module-boilerplate) |
+| authors      | Jakub Grzelak, Nithin Saai                                       |
 
 ***
 ## Table of Content
-- [SAP HANA Database Egress](#sap-hana-database-egress)
+
+- [Python Output Module Boilerplate](#python-output-module-boilerplate)
   - [Table of Content](#table-of-content)
   - [Description](#description)
-    - [Features](#features)
-  - [Environment Variables](#environment-variables)
-    - [Module Specific](#module-specific)
-    - [Set by the weeve Agent on the edge-node](#set-by-the-weeve-agent-on-the-edge-node)
+  - [Directory Structure](#directory-structure)
+    - [File Tree](#file-tree)
+  - [Module Variables](#module-variables)
+  - [As a module developer](#as-a-module-developer)
   - [Dependencies](#dependencies)
-  - [Examples](#examples)
-    - [Input](#input)
-    - [Output](#output)
-  - [Docker Compose Example](#docker-compose-example)
-
 ***
 
 ## Description 
 
-This module allows to save data in a selected SAP HANA Database Scheme and Table. Currently this module supports only AMD architecture.
+This is a Python Output Boilerplate module and it serves as a starting point for developers to build output modules for weeve platform and data services.
+Navigate to [As a module developer](#as-a-module-developer) to learn how to use this module. You can also explore our weeve documentation on [weeve Modules](https://docs.weeve.engineering/concepts/edge-applications/weeve-modules) and [module tutorials](https://docs.weeve.engineering/guides/how-to-create-a-weeve-module) to learn more details. 
 
-### Features
-1. Flask ReST client
-2. Writes data to SAP HANA Database
+## Directory Structure
 
-## Environment Variables
+Most important resources:
 
-### Module Specific
-The following module configurations can be provided in a data service designer section on weeve platform:
+| name              | description                                                                                            |
+| ----------------- | ------------------------------------------------------------------------------------------------------ |
+| src               | All source code related to the module (API and module code).                                           |
+| src/main.py       | Entry-point for the module.                                                                            |
+| src/api           | Code responsible for setting module's API and communication with weeve ecosystem.                      |
+| src/module        | Code related to the module's business logic. This is working directory for module developers.          |
+| docker            | All resources related to Docker (Dockerfile, docker-entrypoint.sh, docker-compose.yml).                |
+| example.env       | Holds examples of environment variables for running the module.                                        |
+| requirements.txt  | A list of module dependencies.                                                                         |
+| Module.yaml       | Module's YAML file that is later used by weeve platform Data Service Designer                          |
 
-| Name                 | Environment Variables | type    | Description                                               |
-| -------------------- | --------------------- | ------- | --------------------------------------------------------- |
-| HDB Address          | HDB_ADDRESS           | string  | HANA DB schema address                                    |
-| HDB Port             | HDB_PORT              | integer | HANA DB schema port                                       |
-| HDB Schema Username  | HDB_USER              | string  | HANA DB schema username                                   |
-| HDB Schema Password  | HDB_PASSWORD          | string  | HANA DB schema password                                   |
-| HDB Schema Name      | HDB_SCHEMA            | string  | HANA DB schema holding the table                          |
-| HDB Table Name       | HDB_TABLE             | string  | HANA DB table to write to                                 |
-| HDB Column Headers   | HDB_HEADERS           | string  | List of comma (,) separated HANA DB table column headers. |
-| Data Labels          | LABELS                | string  | List of comma (,) separated labels in passed data. Order of labels must match the order of provided corresponding headers. |
+### File Tree
 
-***
+```bash
+├── src
+│   ├── api
+│   │   ├── __init__.py
+│   │   ├── log.py # log configurations
+│   │   ├── processing_thread.py # a separate thread responsible for triggering data outputting
+│   │   └── request_handler.py # handles module's API and receives data from a previous module
+│   ├── module
+│   │   ├── main.py # [*] main logic for the module
+│   │   └── validator.py # [*] validation logic for incoming data
+│   └── main.py # module entrypoint
+├── docker
+│   ├── .dockerignore
+│   ├── docker-compose.yml
+│   ├── docker-entrypoint.sh
+│   └── Dockerfile
+├── example.env # sample environment variables for the module
+├── Module.yaml # used by weeve platform to generate resource in Data Service Designer section
+├── makefile
+├── README.md
+├── example.README.md # README template for writing module documentation
+└── requirements.txt # module dependencies, used for building Docker image
+```
 
-Other features required for establishing the inter-container communication between modules in a data service are set by weeve agent.
+## Module Variables
 
-### Set by the weeve Agent on the edge-node
+There are 5 module variables that are required by each module to correctly function within weeve ecosystem. In development, these variables can overridden for testing purposes. In production, these variables are set by weeve Agent.
 
 | Environment Variables | type   | Description                                       |
 | --------------------- | ------ | ------------------------------------------------- |
 | MODULE_NAME           | string | Name of the module                                |
-| MODULE_TYPE           | string | Type of the module (ingress, processing, egress)  |
-| EGRESS_SCHEME         | string | URL Scheme                                        |
-| EGRESS_HOST           | string | URL target host                                   |
-| EGRESS_PORT           | string | URL target port                                   |
-| EGRESS_PATH           | string | URL target path                                   |
-| EGRESS_URL            | string | HTTP ReST endpoint for the next module            |
-| INGRESS_HOST          | string | URL local host                                    |
-| INGRESS_PORT          | string | URL local port                                    |
-| INGRESS_PATH          | string | URL local path                                    |
+| MODULE_TYPE           | string | Type of the module (Input, Processing, Output)    |
+| LOG_LEVEL             | string | Allowed log levels: DEBUG, INFO, WARNING, ERROR, CRITICAL. Refer to `logging` package documentation. |
+| INGRESS_HOST          | string | Host to which data will be received               |
+| INGRESS_PORT          | string | Port to which data will be received               |
+
+## As a module developer
+
+RECOMMENDED:
+Make sure you have [virtual environment](https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/)
+
+A module developer needs to add all the configuration and business logic.
+
+All the module logic can be written in the module package in `src/module` directory.
+
+   * The files can me modified for the module
+      1. `module/validator.py`
+         * The function `data_validation` takes the JSON data received from the previous module.
+         * Incoming data can be validated here.
+         * Checks if data is of type permitted by a module (i.e. `dict` or `list`)>
+         * Checks if data contains required fields.
+         * Returns Error if data are not valid.
+      2. `module/module.py`
+         * The function `module_main` takes the JSON data received from the previous module.
+         * All the business logic about modules are written here.
+         * Returns error message.
 
 ## Dependencies
 
-```txt
-Flask==2.0.3
-requests
-python-dotenv
-hdbcli
-```
+The following are module dependencies:
 
-## Examples
-
-### Input
-
-```json
-// Single item
-{
-  "temperature": 10
-}
-// Batch of data
-[
-  {
-  "temperature": 10.01
-  },
-  {
-  "temperature": 12.23
-  }
-]
-```
-
-### Output
-
-There is no output for this module, except data written to a database.
-
-## docker-compose example
-
-```yml
-version: "3"
-services:
-  sap-hana-db-egress:
-    image: weevenetwork/sap-hana-database-egress
-    environment:
-      MODULE_NAME: sap-hana-database-egress
-      EGRESS_URL: None
-      INGRESS_HOST: 0.0.0.0
-      INGRESS_PORT: 80
-      HDB_ADDRESS: f4a3724b752e.hana.us10.hanacloud.com
-      HDB_PORT: 443
-      HDB_USER: user
-      HDB_PASSWORD: password
-      HDB_SCHEMA: schema
-      HDB_TABLE: table
-      HDB_HEADERS: "temp, text, rand"
-      LABELS: "temp, test, random"
-    ports:
-      - 5000:80
-```
+* bottle
