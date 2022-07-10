@@ -1,6 +1,6 @@
 SHELL := /bin/bash # to enable source command in run_app
 
-MODULE=weevenetwork/boilerplate
+MODULE=weevenetwork/sap-hana-database-egress
 VERSION_NAME=v1.0.0
 
 lint:
@@ -37,7 +37,7 @@ push_latest:
 .phony: push_latest
 
 create_and_push_multi_platform:
-	docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v6,linux/arm/v7 -t ${MODULE}:${VERSION_NAME} --push . -f docker/Dockerfile
+	docker buildx build --platform linux/amd64 -t ${MODULE}:${VERSION_NAME} --push . -f docker/Dockerfile
 .phony: create_and_push_multi_platform
 
 run_listener:

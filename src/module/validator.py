@@ -5,6 +5,7 @@ Edit this file to verify data expected by you module.
 """
 
 from logging import getLogger
+from .params import PARAMS
 
 log = getLogger("validator")
 
@@ -29,8 +30,23 @@ def data_validation(data: any) -> str:
 
         allowed_data_types = [dict, list]
 
+        # check data format
         if not type(data) in allowed_data_types:
             return f"Detected type: {type(data)} | Supported types: {allowed_data_types} | invalid!"
+
+        labels = [label.strip() for label in PARAMS['LABELS'].split(',')]
+
+        # check if data contains required label
+        if type(data) == dict:
+            for label in labels:
+                if not label in data.keys():
+                    return 'Provided labels are not matching labels in data'
+
+        if type(data) == list:
+            for d in data:
+                for label in labels:
+                    if not label in d.keys():
+                        return 'Provided labels are not matching labels in data'
 
         return None
 
