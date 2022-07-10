@@ -1,9 +1,76 @@
-version: 1.0.0
-name: SAP HANA Database
-description: Store your Data in your SAP HANA HDBSQL Database
-icon: https://icons-020-demo.s3.eu-central-1.amazonaws.com/mi_sap_output.png
-type: output
-tags:
+displayName: 'SAP HANA Database Egress'       # Display name for the module that will be displayed in the UI.
+moduleName: 'sap-hana-database-egress'        # Module name that will be used to reference the module, and uniquely identify the module and their versions.
+description: 'Store your Data in your SAP HANA HDBSQL Database.'       # Module description that will be displayed in the UI.
+versionName: 'v1.0.0'                    # Module version name that will be used to reference the module version, and uniquely identify the module version with a common name.
+isPublic: true                          # Boolean value that indicates if the module is Public or Private.
+categories:                             # Array of category that will be used to group the module in the UI.
+  - 'Egress'
+type: 'Output'      # Module type (Input, Processing, Output) that will be used to group the module in the UI.
+image:
+  name: 'weevenetwork/sap-hana-database-egress'     # Image name from the docker registry.
+  tag: 'v1.0.0'                               # Image tag from the docker registry.
+  homepage: 'https://hub.docker.com/r/weevenetwork/sap-hana-database-egress'      # Image homepage from the docker registry.
+repository: 'https://github.com/weeve-modules/sap-hana-database-egress'     # Repository URL to source code.
+envs:                                   # Array of environment variables that will be used to configure the module. Also used to show related fields on the UI.
+  - name: HDB Address                   # name of the field to be displayed on the UI.
+    key: HDB_ADDRESS                # key to set in the environment variables.
+    description: HANA DB schema address.     # Description/helper text for the field.
+    value: 'f4a3724b752e.hana.us10.hanacloud.com'                         # Value to be set in the environment variables.
+    type: 'text'                    # Type of the field. Possible values are: ['text', 'select', 'boolean', 'date', 'time', 'dateTime-local', 'number', 'multiple', 'CSV', 'file']
+    options: []
+    dependencies: []
+  - name: HDB Port
+    key: HDB_PORT
+    description: HANA DB schema port.
+    value: 450
+    type: 'number'
+    options: []
+    dependencies: []
+  - name: HDB Schema Username
+    key: HDB_USER
+    description: HANA DB schema username.
+    value: USER_HDI_DB_1
+    type: 'text'
+    options: []
+    dependencies: []
+  - name: HDB Schema Password
+    key: HDB_PASSWORD
+    description: HANA DB schema password.
+    value: password123
+    type: 'text'
+    options: []
+    dependencies: []
+  - name: HDB Schema Name
+    key: HDB_SCHEMA
+    description: HANA DB schema holding the table.
+    value: SCHEMA_HDI_DB_1
+    type: 'text'
+    options: []
+    dependencies: []
+  - name: HDB Table Name
+    key: HDB_TABLE
+    description: HANA DB table to write to.
+    value: TableName
+    type: 'text'
+    options: []
+    dependencies: []
+  - name: HDB Column Headers
+    key: HDB_HEADERS
+    description: List of comma (,) separated HANA DB table column headers.
+    value: 'Temperature, Pressure, Random'
+    type: 'text'
+    options: []
+    dependencies: []
+  - name: Data Labels
+    key: LABELS
+    description: List of comma (,) separated labels in passed data. Order of labels must match the order of provided corresponding headers.
+    value: 'filterTemp, sumPressure, Number'
+    type: 'text'
+    options: []
+    dependencies: []
+ports: []
+mounts: []
+tags:                                   # Array of tags.
   - SAP HANA Database
   - output
   - Store
@@ -12,67 +79,4 @@ tags:
   - HANA
   - HDBSQL
   - Database
-categories:
-  - id: category
-    name: Egress
-image:
-  name: weevenetwork/sap-hana-database-egress
-  tag: latest
-environments:
-  - key: HDB_ADDRESS
-    description: HANA DB schema address
-    value: ''
-    default: f4a3724b752e.hana.us10.hanacloud.com
-    type: string
-    name: HDB Address
-  - key: HDB_PORT
-    description: HANA DB schema port
-    value: ''
-    default: 450
-    type: string
-    name: HDB Port
-  - key: HDB_USER
-    description: HANA DB schema username
-    value: ''
-    default: USER_HDI_DB_1
-    type: string
-    name: HDB Schema Username
-  - key: HDB_PASSWORD
-    description: HANA DB schema password
-    value: ''
-    default: password123
-    type: string
-    name: HDB Schema Password
-  - key: HDB_SCHEMA
-    description: HANA DB schema holding the table
-    value: ''
-    default: SCHEMA_HDI_DB_1
-    type: string
-    name: HDB Schema Name
-  - key: HDB_TABLE
-    description: HANA DB table to write to
-    value: ''
-    default: TableName
-    type: string
-    name: HDB Table Name
-  - key: HDB_HEADERS
-    description: List of comma (,) separated HANA DB table column headers.
-    value: ''
-    default: Temperature, Pressure, Random
-    type: string
-    name: HDB Column Headers
-  - key: LABELS
-    description: List of comma (,) separated labels in passed data. Order of labels must match the order of provided corresponding headers.
-    value: ''
-    default: filterTemp, sumPressure, Number
-    type: string
-    name: Data Labels
-commands: []
-document:
-  ports: []
-  volumes: []
-  restart_policy:
-    condition: on-failure
-    delay: 10s
-    max_attempts: 3
-    window: 120s
+icon: 'https://icons-020-demo.s3.eu-central-1.amazonaws.com/mi_sap_output.png'    # Icon URL that will be displayed in the UI.
