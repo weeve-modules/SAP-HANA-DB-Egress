@@ -69,9 +69,13 @@ envs:                                   # Array of environment variables that wi
     options: []
     dependencies: []
 ports: []
+envPorts: []
 mounts: []
+envMounts: []
+devices: []
+envDevices: []
 tags:                                   # Array of tags.
-  - SAP HANA Database
+  - SAP-HANA-Database
   - output
   - Store
   - Data
