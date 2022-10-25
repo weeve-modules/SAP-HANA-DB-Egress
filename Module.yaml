@@ -22,7 +22,7 @@ envs:                                   # Array of environment variables that wi
   - name: HDB Port
     key: HDB_PORT
     description: HANA DB schema port.
-    value: 450
+    value: '450'
     type: 'number'
     options: []
     dependencies: []
